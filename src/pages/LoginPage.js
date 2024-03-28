@@ -11,7 +11,7 @@ function LoginPage({ setIsLoggedIn }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     try {
       const response = await fetch('https://dummyjson.com/auth/login', {
         method: 'POST',
@@ -22,17 +22,22 @@ function LoginPage({ setIsLoggedIn }) {
           expiresInMins: 30,
         })
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to login');
       }
-
+  
       const data = await response.json();
       localStorage.setItem('token', data.token);
-
-      // Update the login state
-      setIsLoggedIn(true);
-      window.location.href = '/';
+  
+      // Show the toast
+      handleShowToast();
+  
+      // Delay the redirection to the home page
+      setTimeout(() => {
+        setIsLoggedIn(true);
+        window.location.href = '/';
+      }, 2000);
     } catch (error) {
       setError('Invalid username or password');
     }
@@ -73,7 +78,7 @@ function LoginPage({ setIsLoggedIn }) {
           <Toast.Header>
             <strong className="me-auto">Login Successful</strong>
           </Toast.Header>
-          <Toast.Body>You have successfully logged in!</Toast.Body>
+          <Toast.Body>loading..</Toast.Body>
         </Toast>
 
       </Form>
