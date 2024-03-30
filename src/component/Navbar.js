@@ -1,23 +1,40 @@
-import React, { useEffect } from 'react';
-import { Container, Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Container, Nav, Navbar, Form, FormControl } from 'react-bootstrap';
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 function CustomNavbar({ isLoggedIn, setIsLoggedIn }) {
+  const [query, setQuery] = useState('');
+  const [filteredItems, setFilteredItems] = useState([]);
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
     window.location.href = '/';
   };
 
+  const handleSearchItem =(item) =>{
+    localStorage.setItem("searchedItem", JSON.stringify(item));
+  }
+
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token && !isLoggedIn) {
-      setIsLoggedIn(true);
-    }
-  }, [isLoggedIn, setIsLoggedIn]);
+    const searchProducts = async () => {
+        const response = await fetch(`https://dummyjson.com/products/search?q=${query}`);
+        const data = await response.json();
+        setFilteredItems(data.products);
+     
+    };
+      if (query.trim() !== '') {
+        searchProducts();
+      } else {
+        setFilteredItems([]);
+      }
+
+  }, [query]);
+
+ 
 
   return (
     <Navbar style={{ backgroundColor: '#615756' }} expand="lg">
@@ -25,14 +42,24 @@ function CustomNavbar({ isLoggedIn, setIsLoggedIn }) {
         <Navbar.Brand as={Link} to="/">E-commerce</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-          <Form className="d-flex">
+          <Form className="d-flex position-relative">
             <FormControl
               type="search"
-              placeholder="Search"
-              className="mr-2"
+              placeholder="Search for products"
+              className="mr-2 search-input"
               aria-label="Search"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
             />
-            <Button variant="outline-success">Search</Button>
+            {filteredItems.length > 0 && (
+              <div className="position-absolute bg-white p-2 mt-1" style={{ zIndex: 1000, top: 'calc(100% + 10px)', left: 0, width: '100%' }}>
+                <ul className="list-unstyled m-0 p-0">
+                  {filteredItems.map(item => (
+                    <li key={item.id} className="mb-2" onClick={() => handleSearchItem(item)}>{item.title}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </Form>
           <Nav className="ms-auto">
             {isLoggedIn ? (

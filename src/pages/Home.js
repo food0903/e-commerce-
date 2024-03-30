@@ -33,6 +33,7 @@ function HomePage() {
     setCurrentSlide(index); // Update the current slide index
   };
 
+
   const settings = {
     dots: true,
     infinite: true,
