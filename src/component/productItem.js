@@ -12,19 +12,7 @@ function ProductItem({ productId }) {
       .catch(error => console.error('Error fetching product details:', error));
   }, [productId]);
 
-  useEffect(() => {
-    // Update product details if productId changes
-    fetch(`https://dummyjson.com/products/${productId}`)
-      .then(res => res.json())
-      .then(data => setProduct(data))
-      .catch(error => console.error('Error fetching product details:', error));
-  }, [productId]);
-
   const handleAddToCart = () => {
-    if (!product) {
-      console.error('Product details are not available.');
-      return;
-    }
   
     // Call API to add the product to the cart
     fetch('https://dummyjson.com/products/add', {
@@ -42,9 +30,7 @@ function ProductItem({ productId }) {
       const existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
       const updatedCartItems = [...existingCartItems, { ...product, id: product.id }];
       localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-      console.log('Product added to cart:', data); // Log the added product
     })
-    .catch(error => console.error('Error adding product to cart:', error));
   };
   
   

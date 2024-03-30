@@ -15,26 +15,22 @@ function CustomNavbar({ isLoggedIn, setIsLoggedIn }) {
     window.location.href = '/';
   };
 
-  const handleSearchItem =(item) =>{
+  const handleSearchItem = (item) => {
     localStorage.setItem("searchedItem", JSON.stringify(item));
   }
 
   useEffect(() => {
     const searchProducts = async () => {
-        const response = await fetch(`https://dummyjson.com/products/search?q=${query}`);
-        const data = await response.json();
-        setFilteredItems(data.products);
-     
+      const response = await fetch(`https://dummyjson.com/products/search?q=${query}`);
+      const data = await response.json();
+      setFilteredItems(data.products);
     };
-      if (query.trim() !== '') {
-        searchProducts();
-      } else {
-        setFilteredItems([]);
-      }
-
+    if (query.trim() !== '') {
+      searchProducts();
+    } else {
+      setFilteredItems([]);
+    }
   }, [query]);
-
- 
 
   return (
     <Navbar style={{ backgroundColor: '#615756' }} expand="lg">
