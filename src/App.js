@@ -5,6 +5,8 @@ import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
 import Home from './pages/Home';
 import CartPage from './pages/CartPage';
+import SearchedProduct from './pages/SearchedProduct';
+
 
 function App() {
   // Load isLoggedIn state from local storage or default to false if not present
@@ -27,6 +29,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/" element={<Home setIsLoggedIn={setIsLoggedIn} />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/SearchedProduct/:item" element={<SearchedProduct />} />
         </Routes>
       </div>
     </Router>

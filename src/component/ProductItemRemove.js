@@ -15,18 +15,13 @@ function ProductItemRemove({ product }) {
       .then(res => res.json())
       .then(data => {
         if (data.isDeleted) {
-          console.log('Product removed from cart:', loadedProduct.title);
-
-          // Remove the corresponding item from localStorage
           const existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
           const updatedCartItems = existingCartItems.filter(item => item.id !== loadedProduct.id);
           localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
 
           setLoadedProduct(null);
-        } else {
-          console.error('Error removing product from cart:', data);
-        }
-      })
+        } 
+      });
   };
 
   return (
@@ -38,9 +33,11 @@ function ProductItemRemove({ product }) {
             <Card.Text>{loadedProduct.description}</Card.Text>
             <Card.Text>Price: ${loadedProduct.price}</Card.Text>
             <img src={loadedProduct.thumbnail} alt={loadedProduct.title} />
-            <Button variant="danger" className="btn btn-danger btn-sm p-2 mt-3" onClick={handleRemoveFromCart}>
-              Remove from Cart
-            </Button>
+            <div className="d-grid gap-2">
+              <Button variant="danger" className="btn btn-danger btn-sm mt-3" onClick={handleRemoveFromCart}>
+                Remove from Cart
+              </Button>
+            </div>
           </Card.Body>
         </Card>
       ) : (

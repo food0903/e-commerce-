@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Nav, Navbar, Form, FormControl } from 'react-bootstrap';
+import { Container, Nav, Navbar, Form, FormControl, ListGroup } from 'react-bootstrap';
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
@@ -14,10 +14,6 @@ function CustomNavbar({ isLoggedIn, setIsLoggedIn }) {
     setIsLoggedIn(false);
     window.location.href = '/';
   };
-
-  const handleSearchItem = (item) => {
-    localStorage.setItem("searchedItem", JSON.stringify(item));
-  }
 
   useEffect(() => {
     const searchProducts = async () => {
@@ -47,15 +43,17 @@ function CustomNavbar({ isLoggedIn, setIsLoggedIn }) {
               value={query}
               onChange={e => setQuery(e.target.value)}
             />
+            <ListGroup as="ul">
             {filteredItems.length > 0 && (
-              <div className="position-absolute bg-white p-2 mt-1" style={{ zIndex: 1000, top: 'calc(100% + 10px)', left: 0, width: '100%' }}>
-                <ul className="list-unstyled m-0 p-0">
+              <div className="position-absolute bg-white p-2 mt-1" style={{ zIndex: 1000, top: 'calc(100% + 10px)', left: 0, width: '100%' }}> 
                   {filteredItems.map(item => (
-                    <li key={item.id} className="mb-2" onClick={() => handleSearchItem(item)}>{item.title}</li>
+                    <ListGroup.Item>
+                        <Link to={`/SearchedProduct/${item.id}`}>{item.title}</Link>
+                    </ListGroup.Item>
                   ))}
-                </ul>
               </div>
             )}
+            </ListGroup>
           </Form>
           <Nav className="ms-auto">
             {isLoggedIn ? (

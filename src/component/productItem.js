@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Toast } from 'react-bootstrap';
 
 function ProductItem({ productId }) {
   const [product, setProduct] = useState(null);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   useEffect(() => {
     // Fetch product details
@@ -13,7 +14,13 @@ function ProductItem({ productId }) {
   }, [productId]);
 
   const handleAddToCart = () => {
-  
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setShowErrorToast(true);
+      setTimeout(() => setShowErrorToast(false), 3000); 
+      return;
+    }
+    
     // Call API to add the product to the cart
     fetch('https://dummyjson.com/products/add', {
       method: 'POST',
@@ -32,11 +39,9 @@ function ProductItem({ productId }) {
       localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
     })
   };
-  
-  
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       {product ? (
         <Card className="text-center p-4">
           <Card.Body>
@@ -52,6 +57,13 @@ function ProductItem({ productId }) {
       ) : (
         <p>Loading...</p>
       )}
+
+      <Toast show={showErrorToast} onClose={() => setShowErrorToast(false)} delay={3000} autohide className="position-fixed top-0 end-0 mt-3 me-3">
+        <Toast.Header>
+          <strong className="me-auto">Error</strong>
+        </Toast.Header>
+        <Toast.Body>You need to login first to add items to the cart</Toast.Body>
+      </Toast>
     </div>
   );
 }
