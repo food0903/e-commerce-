@@ -24,10 +24,39 @@ function ProductItemRemove({ product }) {
       });
   };
 
+  const handleEditProduct = () => {
+    const customName = window.prompt('Enter custom name:');
+    if (customName !== null && customName.trim() !== '') { // Check if input is not empty
+      fetch(`https://dummyjson.com/products/${loadedProduct.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: customName
+        })
+      })
+        .then(res => res.json())
+        .then(updatedProduct => {
+          setLoadedProduct(updatedProduct);
+          // Update local storage
+          const existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+          const updatedCartItems = existingCartItems.map(item =>
+            item.id === loadedProduct.id ? { ...item, title:customName } : item
+          );
+          localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        })
+        .catch(error => {
+          console.error('Error updating product:', error);
+        });
+    }
+  };
+
   return (
     <div>
       {loadedProduct ? (
         <Card className="text-center p-4">
+          <Button variant="outline-secondary" className="position-absolute top-0 start-0 m-2" onClick={handleEditProduct}>
+            Edit
+          </Button>
           <Card.Body>
             <Card.Title>{loadedProduct.title}</Card.Title>
             <Card.Text>{loadedProduct.description}</Card.Text>

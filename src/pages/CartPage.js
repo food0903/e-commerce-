@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 import ProductItemRemove from '../component/ProductItemRemove'; // Assuming correct path to ProductItemRemove component
 
 function CartPage() {
   // State to store the products in the cart
   const [cartProducts, setCartProducts] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(JSON.parse(localStorage.getItem('isLoggedIn')));
 
   // Function to update cartProducts state from localStorage
   const updateCartFromLocalStorage = () => {
@@ -22,6 +24,9 @@ function CartPage() {
       window.removeEventListener('storage', updateCartFromLocalStorage);
     };
   }, []);
+  if (!isLoggedIn) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <div>

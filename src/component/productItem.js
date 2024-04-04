@@ -10,7 +10,6 @@ function ProductItem({ productId }) {
     fetch(`https://dummyjson.com/products/${productId}`)
       .then(res => res.json())
       .then(data => setProduct(data))
-      .catch(error => console.error('Error fetching product details:', error));
   }, [productId]);
 
   const handleAddToCart = () => {
