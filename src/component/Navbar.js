@@ -5,9 +5,11 @@ import { FaRegUser } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-function CustomNavbar({ isLoggedIn, setIsLoggedIn }) {
+function CustomNavbar() {
   const [query, setQuery] = useState('');
   const [filteredItems, setFilteredItems] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
+
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -31,16 +33,17 @@ function CustomNavbar({ isLoggedIn, setIsLoggedIn }) {
   return (
     <Navbar style={{ backgroundColor: '#615756' }} expand="lg">
       <Container>
-        <Navbar.Brand as={Link} to="/">E-commerce</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">Online Shopping</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-          <Form className="d-flex position-relative">
+          <Form className="d-flex position-relative flex-grow-1">
             <FormControl
               type="search"
               placeholder="Search for products"
-              className="mr-2 search-input"
+              className="mr-2"
               aria-label="Search"
               value={query}
+              style={{ width: '600px' }}
               onChange={e => setQuery(e.target.value)}
             />
             <ListGroup as="ul">

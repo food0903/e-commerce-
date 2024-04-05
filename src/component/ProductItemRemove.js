@@ -3,10 +3,24 @@ import { Button, Card } from 'react-bootstrap';
 
 function ProductItemRemove({ product }) {
   const [loadedProduct, setLoadedProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     setLoadedProduct(product);
   }, [product]);
+
+  const increaseQuantity = () => {
+    setQuantity(quantity + 1);
+  };
+  
+  const decreaseQuantity = () => {
+    if (quantity <= 1) {
+      handleRemoveFromCart();
+    } else {
+      setQuantity(quantity - 1);
+    }
+  };
+  
 
   const handleRemoveFromCart = () => {
     fetch(`https://dummyjson.com/products/${loadedProduct.id}`, {
@@ -25,30 +39,20 @@ function ProductItemRemove({ product }) {
   };
 
   const handleEditProduct = () => {
-    const customName = window.prompt('Enter custom name:');
-    if (customName !== null && customName.trim() !== '') { // Check if input is not empty
-      fetch(`https://dummyjson.com/products/${loadedProduct.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: customName
-        })
+    fetch(`https://dummyjson.com/products/${loadedProduct.id}`)
+      .then(res => res.json())
+      .then(product => {
+        const customName = window.prompt('Enter custom name:');
+        if (customName !== null && customName.trim() !== '') {
+          const updatedTitle = `${customName}'s ${product.title}`;
+          setLoadedProduct({ ...product, title: updatedTitle });
+        }
       })
-        .then(res => res.json())
-        .then(updatedProduct => {
-          setLoadedProduct(updatedProduct);
-          // Update local storage
-          const existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-          const updatedCartItems = existingCartItems.map(item =>
-            item.id === loadedProduct.id ? { ...item, title:customName } : item
-          );
-          localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-        })
-        .catch(error => {
-          console.error('Error updating product:', error);
-        });
-    }
+      .catch(error => {
+        console.error('Error fetching product details:', error);
+      });
   };
+  
 
   return (
     <div>
@@ -57,6 +61,11 @@ function ProductItemRemove({ product }) {
           <Button variant="outline-secondary" className="position-absolute top-0 start-0 m-2" onClick={handleEditProduct}>
             Edit
           </Button>
+          <div className="position-absolute top-0 end-0 m-2">
+        <Button variant="outline-secondary" size="sm" className="me-2" onClick={decreaseQuantity}>-</Button>
+        <span className="me-2">{quantity}</span>
+        <Button variant="outline-secondary" size="sm" onClick={increaseQuantity}>+</Button>
+      </div>
           <Card.Body>
             <Card.Title>{loadedProduct.title}</Card.Title>
             <Card.Text>{loadedProduct.description}</Card.Text>

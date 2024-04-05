@@ -20,7 +20,6 @@ function ProductItem({ productId }) {
       return;
     }
     
-    // Call API to add the product to the cart
     fetch('https://dummyjson.com/products/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -45,8 +44,8 @@ function ProductItem({ productId }) {
         <Card className="text-center p-4">
           <Card.Body>
             <Card.Title>{product.title}</Card.Title>
-            <Card.Text>{product.description}</Card.Text>
-            <Card.Text>Price: ${product.price}</Card.Text>
+            <Card.Text> <strong>Description:</strong> {product.description}</Card.Text>
+            <Card.Text> <strong>Price:</strong> ${product.price}</Card.Text>
             <img src={product.thumbnail} alt={product.title} />
           </Card.Body>
           <Button variant="primary" className="btn btn-primary btn-sm p-2" onClick={handleAddToCart}>

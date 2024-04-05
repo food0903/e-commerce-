@@ -37,11 +37,11 @@ function App() {
   return (
     <Router>
       <div>
-        <CustomNavbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+        <CustomNavbar/>
         <Routes>
           <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn} />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/" element={<Home setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/" element={<Home />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/SearchedProduct/:item" element={<SearchedProduct />} />
         </Routes>
