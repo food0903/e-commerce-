@@ -36,7 +36,7 @@ function CustomNavbar() {
         <Navbar.Brand as={Link} to="/"><strong>Online Shopping</strong></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-          <Form className="d-flex position-relative flex-grow-1">
+          <Form className="d-flex position-relative">
             <FormControl
               type="search"
               placeholder="Search for products"
