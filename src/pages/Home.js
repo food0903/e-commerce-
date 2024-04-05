@@ -47,7 +47,7 @@ function HomePage() {
 
   return (
     <div>
-      <h1>Product Categories</h1>
+      <h1 className="d-flex justify-content-center">Product Categories</h1>
       <Slider {...settings}>
         {categories.map(category => (
           <CategoryItem key={category} categoryName={category} />

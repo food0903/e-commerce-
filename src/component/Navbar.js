@@ -33,7 +33,7 @@ function CustomNavbar() {
   return (
     <Navbar style={{ backgroundColor: '#615756' }} expand="lg">
       <Container>
-        <Navbar.Brand as={Link} to="/">Online Shopping</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/"><strong>Online Shopping</strong></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
           <Form className="d-flex position-relative flex-grow-1">
