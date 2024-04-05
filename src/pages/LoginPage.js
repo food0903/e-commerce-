@@ -30,10 +30,8 @@ function LoginPage({ setIsLoggedIn }) {
       const data = await response.json();
       localStorage.setItem('token', data.token);
   
-      // Show the toast
       handleShowToast();
   
-      // Delay the redirection to the home page
       setTimeout(() => {
         setIsLoggedIn(true);
         window.location.href = '/';
